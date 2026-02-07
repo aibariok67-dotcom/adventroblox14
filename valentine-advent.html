@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day Advent Calendar - Roblox Style</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #232323;
+            border-radius: 12px;
+            border: 2px solid #383838;
+        }
+
+        .header h1 {
+            font-size: clamp(24px, 5vw, 42px);
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff1744, #ff4081, #ff1744);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .header p {
+            color: #b0b0b0;
+            font-size: clamp(14px, 3vw, 16px);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .calendar-day {
+            background: #2a2a2a;
+            border: 2px solid #404040;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calendar-day:hover {
+            transform: translateY(-5px);
+            border-color: #ff4081;
+            box-shadow: 0 8px 20px rgba(255, 64, 129, 0.3);
+        }
+
+        .calendar-day.opened {
+            background: #1f1f1f;
+            border-color: #666;
+        }
+
+        .day-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .day-label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .heart-icon {
+            font-size: 40px;
+            margin: 10px 0;
+            filter: grayscale(100%);
+            opacity: 0.3;
+        }
+
+        .calendar-day:hover .heart-icon {
+            filter: grayscale(0%);
+            opacity: 1;
+            animation: heartbeat 1s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #232323;
+            border: 3px solid #ff4081;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            animation: modalAppear 0.3s ease;
+        }
+
+        @keyframes modalAppear {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff1744;
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #d50032;
+            transform: rotate(90deg);
+        }
+
+        .reward-icon {
+            font-size: 80px;
+            margin: 20px 0;
+        }
+
+        .reward-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: #ff4081;
+        }
+
+        .reward-description {
+            color: #b0b0b0;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .transfer-section {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px solid #404040;
+        }
+
+        .transfer-section h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .input-group input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 15px;
+            background: #1a1a1a;
+            border: 2px solid #404040;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #ff4081;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #ff1744, #ff4081);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            background: #00c853;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .inventory {
+            background: #232323;
+            border: 2px solid #383838;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .inventory h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #ff4081;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .inventory-item {
+            background: #2a2a2a;
+            border: 2px solid #404040;
+            border-radius: 8px;
+            padding: 15px 10px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .inventory-item-icon {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .calendar-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 10px;
+            }
+
+            .calendar-day {
+                padding: 15px 10px;
+            }
+
+            .day-number {
+                font-size: 24px;
+            }
+
+            .heart-icon {
+                font-size: 30px;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .input-group input {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💖 ROBLOX VALENTINE'S ADVENT 💖</h1>
+            <p>Открывайте подарки каждый день! Дарите друзьям особенные награды!</p>
+        </div>
+
+        <div class="calendar-grid" id="calendar"></div>
+
+        <div class="inventory">
+            <h2>📦 Моя коллекция</h2>
+            <div class="inventory-grid" id="inventory">
+                <div style="text-align: center; grid-column: 1/-1; color: #888; padding: 20px;">
+                    Открывайте подарки, чтобы пополнить коллекцию!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="rewardModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            <div class="reward-icon" id="rewardIcon"></div>
+            <div class="reward-title" id="rewardTitle"></div>
+            <div class="reward-description" id="rewardDescription"></div>
+            
+            <div class="transfer-section">
+                <h3>🎁 Подарить другу</h3>
+                <div class="input-group">
+                    <input type="text" id="usernameInput" placeholder="Введите Roblox ник друга">
+                </div>
+                <button class="btn" onclick="transferGift()">Отправить подарок</button>
+                <div class="success-message" id="successMessage">
+                    ✅ Подарок успешно отправлен!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const rewards = [
+            { icon: '💎', title: '500 ROBUX', description: 'Получите 500 Робуксов на свой счёт!' },
+            { icon: '👑', title: 'Королевская Корона', description: 'Эксклюзивный головной убор с эффектом сияния' },
+            { icon: '🔥', title: 'Огненные Крылья', description: 'Легендарные крылья с анимацией пламени' },
+            { icon: '💎', title: '500 ROBUX', description: 'Получите 500 Робуксов на свой счёт!' },
+            { icon: '⚔️', title: 'Меч Купидона', description: 'Мифическое оружие с эффектом сердец' },
+            { icon: '🌹', title: 'Розовый Плащ', description: 'Элегантный плащ с эффектом лепестков' },
+            { icon: '💎', title: '500 ROBUX', description: 'Получите 500 Робуксов на свой счёт!' },
+            { icon: '🎭', title: 'Маска Амура', description: 'Редкая маска с золотым орнаментом' },
+            { icon: '✨', title: 'Звёздная Аура', description: 'Сияющая аура с частицами звёзд' },
+            { icon: '💎', title: '500 ROBUX', description: 'Получите 500 Робуксов на свой счёт!' },
+            { icon: '🦋', title: 'Крылья Бабочки', description: 'Изящные крылья с переливами цветов' },
+            { icon: '👗', title: 'Бальное Платье', description: 'Роскошное платье с эффектом мерцания' },
+            { icon: '💎', title: '500 ROBUX', description: 'Получите 500 Робуксов на свой счёт!' },
+            { icon: '🎩', title: 'Цилиндр Джентльмена', description: 'Классический цилиндр с розой' }
+        ];
+
+        let openedDays = JSON.parse(localStorage.getItem('openedDays') || '[]');
+        let inventory = JSON.parse(localStorage.getItem('inventory') || '[]');
+        let currentReward = null;
+
+        function createCalendar() {
+            const calendar = document.getElementById('calendar');
+            for (let i = 1; i <= 14; i++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day' + (openedDays.includes(i) ? ' opened' : '');
+                day.innerHTML = `
+                    <div class="day-number">${i}</div>
+                    <div class="heart-icon">${openedDays.includes(i) ? '💝' : '❤️'}</div>
+                    <div class="day-label">День</div>
+                `;
+                day.onclick = () => openDay(i);
+                calendar.appendChild(day);
+            }
+        }
+
+        function openDay(day) {
+            if (openedDays.includes(day)) {
+                showReward(rewards[day - 1], day);
+                return;
+            }
+
+            const reward = rewards[day - 1];
+            openedDays.push(day);
+            inventory.push({ ...reward, day });
+            localStorage.setItem('openedDays', JSON.stringify(openedDays));
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+
+            showReward(reward, day);
+            updateCalendar();
+            updateInventory();
+        }
+
+        function showReward(reward, day) {
+            currentReward = { ...reward, day };
+            document.getElementById('rewardIcon').textContent = reward.icon;
+            document.getElementById('rewardTitle').textContent = reward.title;
+            document.getElementById('rewardDescription').textContent = reward.description;
+            document.getElementById('rewardModal').classList.add('active');
+            document.getElementById('successMessage').classList.remove('show');
+            document.getElementById('usernameInput').value = '';
+        }
+
+        function closeModal() {
+            document.getElementById('rewardModal').classList.remove('active');
+        }
+
+        function transferGift() {
+            const username = document.getElementById('usernameInput').value.trim();
+            if (!username) {
+                alert('Введите ник друга!');
+                return;
+            }
+
+            const successMsg = document.getElementById('successMessage');
+            successMsg.textContent = `✅ ${currentReward.title} отправлен игроку ${username}!`;
+            successMsg.classList.add('show');
+
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }
+
+        function updateCalendar() {
+            document.getElementById('calendar').innerHTML = '';
+            createCalendar();
+        }
+
+        function updateInventory() {
+            const inventoryEl = document.getElementById('inventory');
+            if (inventory.length === 0) {
+                inventoryEl.innerHTML = '<div style="text-align: center; grid-column: 1/-1; color: #888; padding: 20px;">Открывайте подарки, чтобы пополнить коллекцию!</div>';
+                return;
+            }
+
+            inventoryEl.innerHTML = inventory.map(item => `
+                <div class="inventory-item">
+                    <div class="inventory-item-icon">${item.icon}</div>
+                    <div>День ${item.day}</div>
+                </div>
+            `).join('');
+        }
+
+        // Close modal on outside click
+        document.getElementById('rewardModal').onclick = function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        };
+
+        // Initialize
+        createCalendar();
+        updateInventory();
+    </script>
+</body>
+</html>
