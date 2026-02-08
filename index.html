@@ -633,20 +633,20 @@
 
     <script>
         const gifts = [
-            { day: 1, type: 'robux', amount: 500, name: '500 Robux' },
-            { day: 2, type: 'skin', name: 'Heart Wings' },
-            { day: 3, type: 'skin', name: 'Cupid Bow' },
-            { day: 4, type: 'robux', amount: 500, name: '500 Robux' },
-            { day: 5, type: 'skin', name: 'Love Potion' },
-            { day: 6, type: 'skin', name: 'Rose Crown' },
-            { day: 7, type: 'robux', amount: 500, name: '500 Robux' },
-            { day: 8, type: 'skin', name: 'Valentine Halo' },
-            { day: 9, type: 'skin', name: 'Heart Sword' },
-            { day: 10, type: 'robux', amount: 500, name: '500 Robux' },
-            { day: 11, type: 'skin', name: 'Candy Backpack' },
-            { day: 12, type: 'skin', name: 'Love Letter' },
-            { day: 13, type: 'robux', amount: 500, name: '500 Robux' },
-            { day: 14, type: 'skin', name: 'Valentine Outfit' },
+            { day: 1, type: 'skin', name: 'Lucky duck' },
+            { day: 2, type: 'skin', name: 'New skin' },
+            { day: 3, type: 'robux', amount: 1000, name: '1000 Robux' },
+            { day: 4, type: 'skin', name: 'New skin'},
+            { day: 5, type: 'robux', amount: 500, name: '500 Robux' },
+            { day: 6, type: 'skin', name: 'New skin' },
+            { day: 7, type: 'skin', name: 'Secret item' },
+            { day: 8, type: 'robux', amount: 500, name: '500 Robux' }
+            { day: 9, type: 'robux', amount: 400, name: '500 Robux' }
+            { day: 10, type: 'skin', name: 'New skin' },
+            { day: 11, type: 'skin', name: 'New skin' },
+            { day: 12, type: 'robux', amount: 750, name: '500 Robux' }
+            { day: 7, type: 'skin', name: 'Secret item' },
+            { day: 14, type: 'skin', name: 'New skin' },
         ];
 
         let openedDays = new Set();
@@ -704,7 +704,7 @@
             
             const img = document.createElement('img');
             // ↓↓↓ ВСТАВЬ СЮДА КАРТИНКУ ДЛЯ БОЛЬШОГО МОДАЛЬНОГО ОКНА ↓↓↓
-            img.src = `item3.png`;
+            img.src = `images/gift-${day}.png`;
             // ↑↑↑ ВСТАВЬ СЮДА КАРТИНКУ ДЛЯ БОЛЬШОГО МОДАЛЬНОГО ОКНА ↑↑↑
             img.alt = gift.name;
             img.style.width = '100%';
