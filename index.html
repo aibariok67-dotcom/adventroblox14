@@ -37,7 +37,6 @@
             position: relative;
         }
 
-        /* Валентиновский декор */
         body::before {
             content: '';
             position: fixed;
@@ -53,7 +52,6 @@
             z-index: 0;
         }
 
-        /* HEADER */
         .header {
             background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
             padding: 3rem 1.5rem;
@@ -141,7 +139,6 @@
             letter-spacing: 0.02em;
         }
 
-        /* CALENDAR CONTAINER */
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -164,7 +161,6 @@
             }
         }
 
-        /* CALENDAR DAY CARD */
         .day-card {
             aspect-ratio: 1;
             background: #ffffff;
@@ -256,7 +252,6 @@
             border-color: #4a4a4a;
         }
 
-        /* Засекреченное состояние */
         .gift-icon-locked {
             position: absolute;
             inset: 0;
@@ -291,7 +286,6 @@
             height: 100%;
         }
 
-        /* ВСТАВЬТЕ СЮДА СВОЮ PNG КАРТИНКУ */
         .gift-icon-container img {
             width: 70%;
             height: 70%;
@@ -307,7 +301,6 @@
             color: rgba(255, 182, 193, 0.6);
         }
 
-        /* MODAL OVERLAY */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -326,7 +319,6 @@
             to { opacity: 1; }
         }
 
-        /* MODAL CONTENT */
         .modal {
             background: #ffffff;
             border-radius: 1.5rem;
@@ -379,7 +371,6 @@
             overflow: hidden;
         }
 
-        /* ВСТАВЬТЕ СЮДА БОЛЬШУЮ PNG КАРТИНКУ ПОДАРКА */
         .modal-gift-image img {
             max-width: 80%;
             max-height: 80%;
@@ -477,7 +468,6 @@
             transform: none;
         }
 
-        /* TRANSFER MODAL */
         .input-group {
             margin-bottom: 1.5rem;
         }
@@ -518,7 +508,6 @@
             display: none !important;
         }
 
-        /* УВЕДОМЛЕНИЕ "ОТПРАВЛЕНО" */
         .success-notification {
             position: fixed;
             top: 50%;
@@ -588,7 +577,6 @@
     </style>
 </head>
 <body>
-    <!-- HEADER -->
     <header class="header">
         <div class="header-content">
             <h1 class="title">Valentine's Calendar 2026</h1>
@@ -596,24 +584,17 @@
         </div>
     </header>
 
-    <!-- CALENDAR -->
     <div class="container">
-        <div class="calendar-grid" id="calendar">
-            <!-- Календарь генерируется через JavaScript -->
-        </div>
+        <div class="calendar-grid" id="calendar"></div>
     </div>
 
-    <!-- GIFT MODAL -->
     <div id="giftModal" class="modal-overlay hidden">
         <div class="modal">
             <div class="modal-header">
                 <div class="modal-day-badge">DAY <span id="modalDay">1</span></div>
             </div>
             
-            <div class="modal-gift-image" id="modalGiftImage">
-                <!-- ВСТАВЬТЕ СЮДА ВАШУ БОЛЬШУЮ КАРТИНКУ:
-                     <img src="путь-к-вашей-картинке.png" alt="Gift"> -->
-            </div>
+            <div class="modal-gift-image" id="modalGiftImage"></div>
             
             <h2 class="modal-gift-name" id="modalGiftName">Gift Name</h2>
             <p class="modal-gift-description" id="modalGiftDescription">Description</p>
@@ -625,7 +606,6 @@
         </div>
     </div>
 
-    <!-- TRANSFER MODAL -->
     <div id="transferModal" class="modal-overlay hidden">
         <div class="modal">
             <div class="modal-header">
@@ -652,7 +632,6 @@
     </div>
 
     <script>
-        // ДАННЫЕ ПОДАРКОВ (14 дней)
         const gifts = [
             { day: 1, type: 'robux', amount: 500, name: '500 Robux' },
             { day: 2, type: 'skin', name: 'Heart Wings' },
@@ -673,7 +652,6 @@
         let openedDays = new Set();
         let currentGift = null;
 
-        // ГЕНЕРАЦИЯ КАЛЕНДАРЯ
         function generateCalendar() {
             const calendar = document.getElementById('calendar');
             calendar.innerHTML = '';
@@ -689,8 +667,9 @@
                         <div class="gift-icon-container">
                             <div class="gift-icon-locked"></div>
                             <div class="gift-icon-revealed">
-                                <!-- ВСТАВЬТЕ СЮДА ВАШУ МАЛЕНЬКУЮ КАРТИНКУ:
-                                     <img src="gift-${gift.day}.png" alt="${gift.name}"> -->
+                                <!-- ↓↓↓ ВСТАВЬ СЮДА КАРТИНКУ ДЛЯ МАЛЕНЬКОЙ ИКОНКИ ↓↓↓ -->
+                                <img src="images/gift-${gift.day}.png" alt="${gift.name}">
+                                <!-- ↑↑↑ ВСТАВЬ СЮДА КАРТИНКУ ДЛЯ МАЛЕНЬКОЙ ИКОНКИ ↑↑↑ -->
                             </div>
                         </div>
                         <div class="opened-badge" style="display: none;">Opened</div>
@@ -701,20 +680,17 @@
             });
         }
 
-        // ОТКРЫТИЕ ДНЯ
         function openDay(day) {
             const gift = gifts.find(g => g.day === day);
             if (!gift) return;
 
             currentGift = gift;
 
-            // Отметить как открытый
             if (!openedDays.has(day)) {
                 openedDays.add(day);
                 updateDayCard(day);
             }
 
-            // Заполнить модальное окно
             document.getElementById('modalDay').textContent = day;
             document.getElementById('modalGiftName').textContent = gift.name;
             
@@ -723,11 +699,23 @@
                 : 'Exclusive Valentine\'s skin unlocked!';
             document.getElementById('modalGiftDescription').textContent = description;
 
-            // Показать модальное окно
+            const modalImage = document.getElementById('modalGiftImage');
+            modalImage.innerHTML = '';
+            
+            const img = document.createElement('img');
+            // ↓↓↓ ВСТАВЬ СЮДА КАРТИНКУ ДЛЯ БОЛЬШОГО МОДАЛЬНОГО ОКНА ↓↓↓
+            img.src = `item3.png`;
+            // ↑↑↑ ВСТАВЬ СЮДА КАРТИНКУ ДЛЯ БОЛЬШОГО МОДАЛЬНОГО ОКНА ↑↑↑
+            img.alt = gift.name;
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'contain';
+            
+            modalImage.appendChild(img);
+
             document.getElementById('giftModal').classList.remove('hidden');
         }
 
-        // ОБНОВЛЕНИЕ КАРТОЧКИ ДНЯ
         function updateDayCard(day) {
             const cards = document.querySelectorAll('.day-card');
             const index = day - 1;
@@ -738,12 +726,10 @@
             }
         }
 
-        // ЗАКРЫТЬ МОДАЛЬНОЕ ОКНО ПОДАРКА
         function closeGiftModal() {
             document.getElementById('giftModal').classList.add('hidden');
         }
 
-        // ОТКРЫТЬ МОДАЛЬНОЕ ОКНО ПЕРЕДАЧИ
         function openTransferModal() {
             if (!currentGift) return;
             
@@ -752,25 +738,21 @@
             document.getElementById('transferModal').classList.remove('hidden');
         }
 
-        // ЗАКРЫТЬ МОДАЛЬНОЕ ОКНО ПЕРЕДАЧИ
         function closeTransferModal() {
             document.getElementById('transferModal').classList.add('hidden');
             document.getElementById('recipientNick').value = '';
         }
 
-        // ОТПРАВКА ПОДАРКА
         function sendGift() {
             const nick = document.getElementById('recipientNick').value.trim();
             if (!nick) return;
 
-            // Показать уведомление
             showSuccessNotification(currentGift.name, nick);
             
             closeTransferModal();
             document.getElementById('recipientNick').value = '';
         }
 
-        // ПОКАЗАТЬ УВЕДОМЛЕНИЕ ОБ УСПЕШНОЙ ОТПРАВКЕ
         function showSuccessNotification(giftName, recipient) {
             const notification = document.createElement('div');
             notification.className = 'success-notification';
@@ -781,20 +763,17 @@
             
             document.body.appendChild(notification);
             
-            // Удалить через 2.5 секунды
             setTimeout(() => {
                 notification.style.animation = 'fadeOut 0.3s ease forwards';
                 setTimeout(() => notification.remove(), 300);
             }, 2500);
         }
 
-        // ОБНОВЛЕНИЕ КНОПКИ ОТПРАВКИ
         document.getElementById('recipientNick')?.addEventListener('input', function() {
             const btn = document.getElementById('sendBtn');
             btn.disabled = !this.value.trim();
         });
 
-        // ЗАКРЫТИЕ ПО КЛИКУ ВНЕ МОДАЛЬНОГО ОКНА
         document.getElementById('giftModal')?.addEventListener('click', function(e) {
             if (e.target === this) closeGiftModal();
         });
@@ -803,7 +782,6 @@
             if (e.target === this) closeTransferModal();
         });
 
-        // ИНИЦИАЛИЗАЦИЯ
         generateCalendar();
     </script>
 </body>
