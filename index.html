@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Valentine's Advent Calendar 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
     <style>
@@ -304,8 +307,7 @@
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.85);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -655,6 +657,7 @@
         function generateCalendar() {
             const calendar = document.getElementById('calendar');
             calendar.innerHTML = '';
+            const timestamp = Date.now();
 
             gifts.forEach(gift => {
                 const card = document.createElement('div');
@@ -667,9 +670,7 @@
                         <div class="gift-icon-container">
                             <div class="gift-icon-locked"></div>
                             <div class="gift-icon-revealed">
-                                <!-- ↓↓↓ ВСТАВЬ СЮДА КАРТИНКУ ДЛЯ МАЛЕНЬКОЙ ИКОНКИ ↓↓↓ -->
-                                <img src="images/gift-${gift.day}.png" alt="${gift.name}">
-                                <!-- ↑↑↑ ВСТАВЬ СЮДА КАРТИНКУ ДЛЯ МАЛЕНЬКОЙ ИКОНКИ ↑↑↑ -->
+                                <img src="images/gift-${gift.day}.png?v=${timestamp}" alt="${gift.name}">
                             </div>
                         </div>
                         <div class="opened-badge" style="display: none;">Opened</div>
@@ -703,13 +704,19 @@
             modalImage.innerHTML = '';
             
             const img = document.createElement('img');
-            // ↓↓↓ ВСТАВЬ СЮДА КАРТИНКУ ДЛЯ БОЛЬШОГО МОДАЛЬНОГО ОКНА ↓↓↓
-            img.src = `images/gift-${day}.png`;
-            // ↑↑↑ ВСТАВЬ СЮДА КАРТИНКУ ДЛЯ БОЛЬШОГО МОДАЛЬНОГО ОКНА ↑↑↑
+            img.src = `images/gift-${day}.png?v=${Date.now()}`;
             img.alt = gift.name;
             img.style.width = '100%';
             img.style.height = '100%';
             img.style.objectFit = 'contain';
+            
+            img.onerror = function() {
+                this.style.display = 'none';
+                const placeholder = document.createElement('div');
+                placeholder.style.cssText = 'font-size: 4rem; color: #ccc;';
+                placeholder.textContent = '🎁';
+                modalImage.appendChild(placeholder);
+            };
             
             modalImage.appendChild(img);
 
@@ -783,6 +790,12 @@
         });
 
         generateCalendar();
+
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
     </script>
 </body>
 </html>
