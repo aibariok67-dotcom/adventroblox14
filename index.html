@@ -2,11 +2,13 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Valentine's Advent Calendar 2026</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Valentine's Calendar 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -16,25 +18,21 @@
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none;
             -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
             user-select: none;
         }
 
         input {
             -webkit-user-select: text;
-            -moz-user-select: text;
-            -ms-user-select: text;
             user-select: text;
         }
 
         *:focus {
-            outline: none !important;
+            outline: none;
         }
 
         body {
-            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+            font-family: 'Outfit', -apple-system, sans-serif;
+            background: #fafafa;
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
@@ -56,9 +54,8 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            background: #1a1a1a;
             padding: 3rem 1.5rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
         }
@@ -95,18 +92,18 @@
 
         .title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-size: 2.5rem;
             font-weight: 700;
             text-align: center;
             color: #ffffff;
-            letter-spacing: -0.02em;
             margin-bottom: 0.75rem;
             text-transform: uppercase;
+            position: relative;
+            background: -webkit-linear-gradient(135deg, #ffffff 0%, #ffb6c1 50%, #ffffff 100%);
             background: linear-gradient(135deg, #ffffff 0%, #ffb6c1 50%, #ffffff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            position: relative;
         }
 
         .title::before,
@@ -128,6 +125,10 @@
         }
 
         @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
             .title::before,
             .title::after {
                 display: none;
@@ -137,9 +138,8 @@
         .subtitle {
             text-align: center;
             color: #b0b0b0;
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-size: 1rem;
             font-weight: 500;
-            letter-spacing: 0.02em;
         }
 
         .container {
@@ -152,15 +152,16 @@
 
         .calendar-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            grid-template-columns: repeat(7, 1fr);
             gap: 1.5rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        @media (min-width: 768px) {
+        @media (max-width: 768px) {
             .calendar-grid {
-                grid-template-columns: repeat(7, 1fr);
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
             }
         }
 
@@ -171,46 +172,24 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             border: 2px solid transparent;
         }
 
-        .day-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(240, 240, 240, 0.8) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .day-card:hover::before {
-            opacity: 1;
-        }
-
         .day-card:hover {
-            transform: translateY(-8px) scale(1.02);
             box-shadow: 0 20px 40px rgba(255, 105, 135, 0.15);
             border-color: rgba(255, 182, 193, 0.3);
         }
 
         .day-card:active {
-            transform: translateY(-4px) scale(0.98);
+            transform: scale(0.95);
         }
 
         .day-card.opened {
-            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            background: #2a2a2a;
             border-color: rgba(255, 182, 193, 0.2);
             box-shadow: 0 4px 20px rgba(255, 105, 135, 0.1);
-        }
-
-        .day-card.opened::before {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
         }
 
         .day-card-content {
@@ -226,11 +205,16 @@
 
         .day-number {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-size: 2.5rem;
             font-weight: 700;
             color: #1a1a1a;
             margin-bottom: 0.75rem;
-            letter-spacing: -0.02em;
+        }
+
+        @media (max-width: 768px) {
+            .day-number {
+                font-size: 2rem;
+            }
         }
 
         .day-card.opened .day-number {
@@ -238,16 +222,22 @@
         }
 
         .gift-icon-container {
-            width: clamp(60px, 10vw, 80px);
-            height: clamp(60px, 10vw, 80px);
+            width: 80px;
+            height: 80px;
             background: #f5f5f5;
             border-radius: 0.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 2px solid #e0e0e0;
-            transition: all 0.3s ease;
             position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .gift-icon-container {
+                width: 60px;
+                height: 60px;
+            }
         }
 
         .day-card.opened .gift-icon-container {
@@ -257,8 +247,11 @@
 
         .gift-icon-locked {
             position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #e8e8e8;
             border-radius: 0.75rem;
             display: flex;
             align-items: center;
@@ -279,14 +272,14 @@
 
         .gift-icon-revealed {
             display: none;
-        }
-
-        .day-card.opened .gift-icon-revealed {
-            display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
             height: 100%;
+        }
+
+        .day-card.opened .gift-icon-revealed {
+            display: flex;
         }
 
         .gift-icon-container img {
@@ -300,25 +293,30 @@
             font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
             color: rgba(255, 182, 193, 0.6);
+            display: none;
+        }
+
+        .day-card.opened .opened-badge {
+            display: block;
         }
 
         .modal-overlay {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.85);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
             z-index: 1000;
-            opacity: 0;
-            animation: fadeIn 0.3s ease forwards;
         }
 
-        @keyframes fadeIn {
-            to { opacity: 1; }
+        .modal-overlay.hidden {
+            display: none;
         }
 
         .modal {
@@ -329,17 +327,6 @@
             padding: 2.5rem;
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
             border: 1px solid #e0e0e0;
-            opacity: 0;
-            transform: scale(0.9) translateY(20px);
-            animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-            animation-delay: 0.1s;
-        }
-
-        @keyframes scaleIn {
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
         }
 
         .modal-header {
@@ -356,14 +343,13 @@
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1.1rem;
             font-weight: 700;
-            letter-spacing: 0.05em;
             margin-bottom: 1.5rem;
         }
 
         .modal-gift-image {
             width: 100%;
             height: 200px;
-            background: linear-gradient(135deg, #f8f8f8 0%, #ececec 100%);
+            background: #f8f8f8;
             border-radius: 1rem;
             display: flex;
             align-items: center;
@@ -381,13 +367,18 @@
 
         .modal-gift-name {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-size: 2rem;
             font-weight: 700;
             color: #1a1a1a;
             text-align: center;
             margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
             text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .modal-gift-name {
+                font-size: 1.5rem;
+            }
         }
 
         .modal-gift-description {
@@ -410,7 +401,6 @@
             font-weight: 700;
             font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
             cursor: pointer;
             border: none;
             transition: all 0.2s ease;
@@ -422,32 +412,13 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            background: #1a1a1a;
             color: #ffffff;
             box-shadow: 0 4px 15px rgba(255, 105, 135, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 182, 193, 0.1) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .btn-primary:hover::before {
-            opacity: 1;
         }
 
         .btn-primary:hover {
             box-shadow: 0 6px 20px rgba(255, 105, 135, 0.3);
-            transform: translateY(-2px);
         }
 
         .btn-secondary {
@@ -455,19 +426,10 @@
             color: #1a1a1a;
         }
 
-        .btn-secondary:hover {
-            background: #e5e5e5;
-        }
-
         .btn:disabled {
             background: #e0e0e0;
             color: #a0a0a0;
             cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .btn:disabled:hover {
-            transform: none;
         }
 
         .input-group {
@@ -479,7 +441,6 @@
             font-size: 0.85rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
             color: #666;
             margin-bottom: 0.5rem;
         }
@@ -492,7 +453,6 @@
             font-size: 1.1rem;
             font-weight: 600;
             font-family: 'Outfit', sans-serif;
-            transition: all 0.2s ease;
             background: #fafafa;
         }
 
@@ -501,21 +461,12 @@
             background: #ffffff;
         }
 
-        .input-field::placeholder {
-            color: #b0b0b0;
-            font-weight: 500;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
         .success-notification {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            background: #1a1a1a;
             color: #ffffff;
             padding: 2rem 3rem;
             border-radius: 1rem;
@@ -523,7 +474,6 @@
             z-index: 2000;
             text-align: center;
             border: 2px solid rgba(255, 182, 193, 0.3);
-            animation: successPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .success-notification::before {
@@ -535,32 +485,6 @@
             animation: heartBeat 1s ease infinite;
         }
 
-        .success-notification-text {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.5rem;
-        }
-
-        .success-notification-subtext {
-            font-size: 0.9rem;
-            color: #b0b0b0;
-            font-weight: 500;
-        }
-
-        @keyframes successPopIn {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.5);
-            }
-            100% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
-        }
-
         @keyframes heartBeat {
             0%, 100% {
                 transform: scale(1);
@@ -570,11 +494,18 @@
             }
         }
 
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.9);
-            }
+        .success-notification-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-notification-subtext {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -622,19 +553,18 @@
                     id="recipientNick" 
                     class="input-field" 
                     placeholder="Enter username..."
-                    autocomplete="off"
                 >
             </div>
             
             <div class="modal-buttons">
-                <button class="btn btn-primary" onclick="sendGift()" id="sendBtn">Send Gift</button>
+                <button class="btn btn-primary" onclick="sendGift()" id="sendBtn" disabled>Send Gift</button>
                 <button class="btn btn-secondary" onclick="closeTransferModal()">Cancel</button>
             </div>
         </div>
     </div>
 
     <script>
-        const gifts = [
+        var gifts = [
             { day: 1, type: 'skin', name: 'Magic carpet' },
             { day: 2, type: 'skin', name: 'New skin' },
             { day: 3, type: 'robux', amount: 500, name: '500 Robux' },
@@ -648,63 +578,87 @@
             { day: 11, type: 'skin', name: 'New skin' },
             { day: 12, type: 'robux', amount: 500, name: '500 Robux' },
             { day: 13, type: 'skin', name: 'Secret item' },
-            { day: 14, type: 'skin', name: 'New skin' },
+            { day: 14, type: 'skin', name: 'New skin' }
         ];
 
-        let openedDays = new Set();
-        let currentGift = null;
+        var openedDays = [];
+        var currentGift = null;
+
+        function hasDay(day) {
+            for (var i = 0; i < openedDays.length; i++) {
+                if (openedDays[i] === day) return true;
+            }
+            return false;
+        }
+
+        function addDay(day) {
+            if (!hasDay(day)) {
+                openedDays.push(day);
+            }
+        }
 
         function generateCalendar() {
-            const calendar = document.getElementById('calendar');
+            var calendar = document.getElementById('calendar');
             calendar.innerHTML = '';
-            const timestamp = Date.now();
+            var timestamp = new Date().getTime();
 
-            gifts.forEach(gift => {
-                const card = document.createElement('div');
+            for (var i = 0; i < gifts.length; i++) {
+                var gift = gifts[i];
+                var card = document.createElement('div');
                 card.className = 'day-card';
-                card.onclick = () => openDay(gift.day);
+                card.setAttribute('data-day', gift.day);
+                card.onclick = (function(day) {
+                    return function() {
+                        openDay(day);
+                    };
+                })(gift.day);
 
-                card.innerHTML = `
-                    <div class="day-card-content">
-                        <div class="day-number">${gift.day}</div>
-                        <div class="gift-icon-container">
-                            <div class="gift-icon-locked"></div>
-                            <div class="gift-icon-revealed">
-                                <img src="images/gift-${gift.day}.png?v=${timestamp}" alt="${gift.name}">
-                            </div>
-                        </div>
-                        <div class="opened-badge" style="display: none;">Opened</div>
-                    </div>
-                `;
+                var html = '<div class="day-card-content">';
+                html += '<div class="day-number">' + gift.day + '</div>';
+                html += '<div class="gift-icon-container">';
+                html += '<div class="gift-icon-locked"></div>';
+                html += '<div class="gift-icon-revealed">';
+                html += '<img src="images/gift-' + gift.day + '.png?v=' + timestamp + '" alt="' + gift.name + '">';
+                html += '</div>';
+                html += '</div>';
+                html += '<div class="opened-badge">Opened</div>';
+                html += '</div>';
 
+                card.innerHTML = html;
                 calendar.appendChild(card);
-            });
+            }
         }
 
         function openDay(day) {
-            const gift = gifts.find(g => g.day === day);
+            var gift = null;
+            for (var i = 0; i < gifts.length; i++) {
+                if (gifts[i].day === day) {
+                    gift = gifts[i];
+                    break;
+                }
+            }
             if (!gift) return;
 
             currentGift = gift;
 
-            if (!openedDays.has(day)) {
-                openedDays.add(day);
+            if (!hasDay(day)) {
+                addDay(day);
                 updateDayCard(day);
             }
 
             document.getElementById('modalDay').textContent = day;
             document.getElementById('modalGiftName').textContent = gift.name;
             
-            const description = gift.type === 'robux' 
-                ? `${gift.amount} Robux added to your account!`
+            var description = gift.type === 'robux' 
+                ? gift.amount + ' Robux added to your account!'
                 : 'Exclusive skin unlocked!';
             document.getElementById('modalGiftDescription').textContent = description;
 
-            const modalImage = document.getElementById('modalGiftImage');
+            var modalImage = document.getElementById('modalGiftImage');
             modalImage.innerHTML = '';
             
-            const img = document.createElement('img');
-            img.src = `images/gift-${day}.png?v=${Date.now()}`;
+            var img = document.createElement('img');
+            img.src = 'images/gift-' + day + '.png?v=' + new Date().getTime();
             img.alt = gift.name;
             img.style.width = '100%';
             img.style.height = '100%';
@@ -712,80 +666,79 @@
             
             img.onerror = function() {
                 this.style.display = 'none';
-                const placeholder = document.createElement('div');
-                placeholder.style.cssText = 'font-size: 4rem; color: #ccc;';
+                var placeholder = document.createElement('div');
+                placeholder.style.fontSize = '4rem';
+                placeholder.style.color = '#ccc';
                 placeholder.textContent = '🎁';
                 modalImage.appendChild(placeholder);
             };
             
             modalImage.appendChild(img);
 
-            document.getElementById('giftModal').classList.remove('hidden');
+            document.getElementById('giftModal').className = 'modal-overlay';
         }
 
         function updateDayCard(day) {
-            const cards = document.querySelectorAll('.day-card');
-            const index = day - 1;
-            if (cards[index]) {
-                cards[index].classList.add('opened');
-                const badge = cards[index].querySelector('.opened-badge');
-                if (badge) badge.style.display = 'block';
+            var cards = document.querySelectorAll('.day-card');
+            for (var i = 0; i < cards.length; i++) {
+                if (cards[i].getAttribute('data-day') == day) {
+                    cards[i].className = 'day-card opened';
+                    break;
+                }
             }
         }
 
         function closeGiftModal() {
-            document.getElementById('giftModal').classList.add('hidden');
+            document.getElementById('giftModal').className = 'modal-overlay hidden';
         }
 
         function openTransferModal() {
             if (!currentGift) return;
             
             document.getElementById('transferGiftName').textContent = currentGift.name;
-            document.getElementById('giftModal').classList.add('hidden');
-            document.getElementById('transferModal').classList.remove('hidden');
+            document.getElementById('giftModal').className = 'modal-overlay hidden';
+            document.getElementById('transferModal').className = 'modal-overlay';
         }
 
         function closeTransferModal() {
-            document.getElementById('transferModal').classList.add('hidden');
+            document.getElementById('transferModal').className = 'modal-overlay hidden';
             document.getElementById('recipientNick').value = '';
         }
 
         function sendGift() {
-            const nick = document.getElementById('recipientNick').value.trim();
+            var nick = document.getElementById('recipientNick').value.trim();
             if (!nick) return;
 
             showSuccessNotification(currentGift.name, nick);
-            
             closeTransferModal();
             document.getElementById('recipientNick').value = '';
         }
 
         function showSuccessNotification(giftName, recipient) {
-            const notification = document.createElement('div');
+            var notification = document.createElement('div');
             notification.className = 'success-notification';
-            notification.innerHTML = `
-                <div class="success-notification-text">Gift Sent!</div>
-                <div class="success-notification-subtext">"${giftName}" → ${recipient}</div>
-            `;
+            
+            var html = '<div class="success-notification-text">Gift Sent!</div>';
+            html += '<div class="success-notification-subtext">"' + giftName + '" → ' + recipient + '</div>';
+            notification.innerHTML = html;
             
             document.body.appendChild(notification);
             
-            setTimeout(() => {
-                notification.style.animation = 'fadeOut 0.3s ease forwards';
-                setTimeout(() => notification.remove(), 300);
+            setTimeout(function() {
+                notification.remove();
             }, 2500);
         }
 
-        document.getElementById('recipientNick')?.addEventListener('input', function() {
-            const btn = document.getElementById('sendBtn');
+        document.getElementById('recipientNick').addEventListener('input', function() {
+            var btn = document.getElementById('sendBtn');
             btn.disabled = !this.value.trim();
         });
 
-        document.getElementById('giftModal')?.addEventListener('click', function(e) {
+        document.getElementById('giftModal').addEventListener('click', function(e) {
             if (e.target === this) closeGiftModal();
         });
 
-        document.getElementById('transferModal')?.addEventListener('click', function(e) {
+        document.getElementById('transferModal').addEventListener('click', function(e) {
             if (e.target === this) closeTransferModal();
         });
 
